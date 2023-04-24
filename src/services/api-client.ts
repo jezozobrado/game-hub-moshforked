@@ -30,6 +30,12 @@ class APIClient<T> {
       .get<T>(this.endpoint + "/" + id)
       .then((res) => res.data);
   };
+
+  getScreenshots = (slug: string) => {
+    return axiosInstance
+      .get<FetchResponse<T>>(this.endpoint + "/" + slug + "/screenshots")
+      .then((res) => res.data);
+  };
 }
 
 export default APIClient;
