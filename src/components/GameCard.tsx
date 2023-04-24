@@ -1,7 +1,9 @@
-import { Card, CardBody, Heading, HStack, Image, Text } from "@chakra-ui/react";
-import React from "react";
+import { Card, CardBody, Heading, HStack, Image } from "@chakra-ui/react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Game } from "../entities/Game";
+import { Trailer } from "../entities/Trailer";
+import useTrailers from "../hooks/useTrailers";
 import getCroppedImageUrl from "../services/image-url";
 import CriticScore from "./CriticScore";
 import Emoji from "./Emoji";
@@ -12,9 +14,25 @@ interface Props {
 }
 
 const GameCard = ({ game }: Props) => {
+  const [isHovered, setIsHovered] = useState(false);
+  const { data, error, isLoading } = useTrailers(game.id);
+
+  if (error) throw error;
+
   return (
-    <Card>
-      <Image src={getCroppedImageUrl(game.background_image)} />
+    <Card
+      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={() => {
+        console.log(data);
+
+        return setIsHovered(true);
+      }}
+    >
+      {isHovered && data?.count! > 0 ? (
+        <video src={data?.results[0]?.data[480]} autoPlay muted />
+      ) : (
+        <Image src={getCroppedImageUrl(game.background_image)} />
+      )}
       <CardBody>
         <HStack justifyContent="space-between" marginBottom={3}>
           <PlatformIconList
