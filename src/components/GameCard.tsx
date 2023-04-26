@@ -2,11 +2,11 @@ import { Card, CardBody, Heading, HStack, Image } from "@chakra-ui/react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Game } from "../entities/Game";
-import { Trailer } from "../entities/Trailer";
 import useTrailers from "../hooks/useTrailers";
 import getCroppedImageUrl from "../services/image-url";
 import CriticScore from "./CriticScore";
 import Emoji from "./Emoji";
+import GameImage from "./GameImage";
 import PlatformIconList from "./PlatformIconList";
 
 interface Props {
@@ -22,15 +22,12 @@ const GameCard = ({ game }: Props) => {
   return (
     <Card
       onMouseLeave={() => setIsHovered(false)}
-      onMouseEnter={() => {
-        console.log(data);
-
-        return setIsHovered(true);
-      }}
+      onMouseEnter={() => setIsHovered(true)}
     >
       {isHovered && data?.count! > 0 ? (
         <video src={data?.results[0]?.data[480]} autoPlay muted />
       ) : (
+        // <GameImage gameSlug={game.slug} />
         <Image src={getCroppedImageUrl(game.background_image)} />
       )}
       <CardBody>
